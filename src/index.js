@@ -5,10 +5,12 @@ import ReactDOM from 'react-dom/client';
 // import 'bootstrap/scss/bootstrap.scss';
 // 加入自定義boostrap樣式
 import './stylesheets/all.scss'
-
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// 加入Axios
 import axios from 'axios';
+// 加入react-router-dom 
+import { HashRouter } from 'react-router-dom';
 
 //預設網址
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -16,7 +18,9 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <HashRouter>
+      <App />
+    </HashRouter>
   </React.StrictMode>
 );
 
