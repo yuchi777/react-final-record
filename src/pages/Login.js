@@ -26,6 +26,10 @@ function Login(){
     const res= await axios.post(`/v2/admin/signin`, data);
     console.log(res);
 
+    //axios在headers加入token驗證資訊
+    const { token } = res.data;
+    axios.defaults.headers.common['Authorization'] = token
+    
     const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
     console.log(productRes);
   }
