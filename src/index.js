@@ -1,9 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+
+// 加入bootstrap 
+// import 'bootstrap/scss/bootstrap.scss';
+// 加入自定義boostrap樣式
+import './stylesheets/all.scss'
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+
 //預設網址
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 

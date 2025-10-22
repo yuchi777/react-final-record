@@ -1,5 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 
@@ -14,33 +12,29 @@ function App() {
     // fetchData();
 
     //立即呼叫 IIFE 
-    (async ()=>{
+    (async () => {
 
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
       console.log(res);
 
     })();
 
-    
+
 
   }, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button type="button" className="btn btn-primary">Primary</button>
+      <button type="button" className="btn btn-secondary">Secondary</button>
+      <button type="button" className="btn btn-success">Success</button>
+      <button type="button" className="btn btn-danger">Danger</button>
+      <button type="button" className="btn btn-warning">Warning</button>
+      <button type="button" className="btn btn-info">Info</button>
+      <button type="button" className="btn btn-light">Light</button>
+      <button type="button" className="btn btn-dark">Dark</button>
+
+      <button type="button" className="btn btn-link">Link</button>
     </div>
   );
 }
