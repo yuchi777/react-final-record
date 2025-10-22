@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import axios from 'axios';
+import {Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
 
 function App() {
 
@@ -18,23 +20,14 @@ function App() {
       console.log(res);
 
     })();
-
-
-
   }, []);
 
   return (
     <div className="App">
-      <button type="button" className="btn btn-primary">Primary</button>
-      <button type="button" className="btn btn-secondary">Secondary</button>
-      <button type="button" className="btn btn-success">Success</button>
-      <button type="button" className="btn btn-danger">Danger</button>
-      <button type="button" className="btn btn-warning">Warning</button>
-      <button type="button" className="btn btn-info">Info</button>
-      <button type="button" className="btn btn-light">Light</button>
-      <button type="button" className="btn btn-dark">Dark</button>
-
-      <button type="button" className="btn btn-link">Link</button>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login/>} />
+      </Routes>
     </div>
   );
 }
