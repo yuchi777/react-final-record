@@ -1,15 +1,15 @@
-
 import { useState } from "react";
 import axios from "axios";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 function Login(){
-  
-  
   const [data, setData] = useState({
     username: '',
     password: '',
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     
@@ -36,28 +36,14 @@ function Login(){
     // document.cookie = `doDomethingOnlyOnce=true; expires=Fri, 31 DEc 9999 23:59:59 GMT`;
     document.cookie = `yuchiToken=${token}; expires=${new Date(expired)}`;
 
-
+    if(res.data.success){
+      navigate('/admin/products');
+    }
     
     
   }
   
-  useEffect(()=>{
-    // 取出Token
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('yuchiToken='))
-      ?.split('=')[1];
-    console.log(token,'token is here');
 
-
-    axios.defaults.headers.common['Authorization'] = token ;
-    // (async()=>{
-    //   const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
-    //   console.log(productRes);
-    
-    // })();
-
-  },[])
   
 
   return (
