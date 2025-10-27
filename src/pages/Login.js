@@ -8,6 +8,7 @@ function Login(){
     username: '',
     password: '',
   });
+  const [loginState, setloginState] = useState({});
 
   const navigate = useNavigate();
 
@@ -23,8 +24,9 @@ function Login(){
   }
 
   const submit = async(e) => {
-
-    const res= await axios.post(`/v2/admin/signin`, data);
+    
+    try {
+      const res= await axios.post(`/v2/admin/signin`, data);
     // console.log(res);
 
     //axios在headers加入token驗證資訊
@@ -39,6 +41,12 @@ function Login(){
     if(res.data.success){
       navigate('/admin/products');
     }
+      
+    } catch (error) {
+      setloginState(error.response.data);
+    }
+
+    
     
     
   }
@@ -51,9 +59,11 @@ function Login(){
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2>登入帳號</h2>
-          <div className="alert alert-danger" role="alert">
-            錯誤訊息
+
+          <div className={`alert alert-danger ${loginState.message ? 'd-block' : 'd-none'}`} role="alert">
+            {loginState.message}
           </div>
+
           <div className="mb-2">
             <label htmlFor="email" className="form-label w-100">
               Email
