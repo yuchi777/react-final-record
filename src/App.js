@@ -5,6 +5,7 @@ import Login from './pages/Login';
 
 function App() {
 
+  //useEffect 內只能放同步函式，不能直接放 async function
   useEffect(() => {
     console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
     // async function fetchData() {

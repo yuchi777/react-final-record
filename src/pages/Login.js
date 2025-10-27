@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 function Login(){
   
@@ -13,26 +14,50 @@ function Login(){
   const handleChange = (e) => {
     
     const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
 
     setData({
       ...data, [name]:value
     })
-    console.log(data);
+    // console.log(data);
   }
 
   const submit = async(e) => {
 
     const res= await axios.post(`/v2/admin/signin`, data);
-    console.log(res);
+    // console.log(res);
 
     //axios在headers加入token驗證資訊
-    const { token } = res.data;
-    axios.defaults.headers.common['Authorization'] = token
+    const { token, expired } = res.data;
+    console.log(res.data);
+
+    // 儲存Token
+    // document.cookie = "doDomethingOnlyOnce=true; expires=Fri, 31 DEc 9999 23:59:59 GMT; SameSite=None; Secure";
+    // document.cookie = `doDomethingOnlyOnce=true; expires=Fri, 31 DEc 9999 23:59:59 GMT`;
+    document.cookie = `yuchiToken=${token}; expires=${new Date(expired)}`;
+
+
     
-    const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
-    console.log(productRes);
+    
   }
+  
+  useEffect(()=>{
+    // 取出Token
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('yuchiToken='))
+      ?.split('=')[1];
+    console.log(token,'token is here');
+
+
+    axios.defaults.headers.common['Authorization'] = token ;
+    // (async()=>{
+    //   const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
+    //   console.log(productRes);
+    
+    // })();
+
+  },[])
   
 
   return (
