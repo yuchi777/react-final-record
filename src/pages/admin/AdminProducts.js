@@ -1,23 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function AdminProducts() {
 
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState({});
+
   useEffect(() => {
     // 取出Token
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('yuchiToken='))
-      ?.split('=')[1];
-    console.log(token, 'token is here');
+    // const token = document.cookie
+    //   .split('; ')
+    //   .find(row => row.startsWith('yuchiToken='))
+    //   ?.split('=')[1];
+    // console.log(token, 'token is here');
+    // axios.defaults.headers.common['Authorization'] = token;
 
 
-    axios.defaults.headers.common['Authorization'] = token;
     // (async()=>{
     //   const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
     //   console.log(productRes);
-
     // })();
+    (async () => {
+      const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`);
+      console.log(productRes);
+      setProducts(productRes.data.products);
+      setPagination(productRes.data.pagination);
+    })();
+
 
   }, [])
 
@@ -45,26 +54,33 @@ function AdminProducts() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                >
-                  編輯
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-danger btn-sm ms-2"
-                >
-                  刪除
-                </button>
-              </td>
-            </tr>
+          {products.map(
+            (product) => {
+              return (
+                <tr>
+                  <td>{product.category}</td>
+                  <td>{product.title}</td>
+                  <td>{product.price}</td>
+                  <td>{product.is_enable ? '啟用' : '未啟用'}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                    >
+                      編輯
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm ms-2"
+                    >
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+              )
+            }
+          )}
+
         </tbody>
       </table>
       {/* <Pagination pagination={pagination} changePage={getProducts} /> */}
