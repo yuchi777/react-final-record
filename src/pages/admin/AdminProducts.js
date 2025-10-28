@@ -14,8 +14,8 @@ function AdminProducts() {
 
     //創建Modal的實體
     //加入設定值 backdrop:'static' 點擊背景不會關閉modal
-    productModal.current = new Modal('#productModal',{
-      backdrop:'static',
+    productModal.current = new Modal('#productModal', {
+      backdrop: 'static',
     });
 
     // 取出Token
@@ -31,27 +31,40 @@ function AdminProducts() {
     //   const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`)
     //   console.log(productRes);
     // })();
-    (async () => {
-      const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`);
-      console.log(productRes);
-      setProducts(productRes.data.products);
-      // setPagination(productRes.data.pagination);
-    })();
 
+    // (async () => {
+    //   const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`);
+    //   console.log(productRes);
+    //   setProducts(productRes.data.products);
+    //   // setPagination(productRes.data.pagination);
+    // })();
+    getProducts();
 
   }, [])
 
-  const openProductModal = () => {
-    productModal.current.show(); 
+
+  const getProducts = async () => {
+    const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`);
+    console.log(productRes);
+    setProducts(productRes.data.products);
+    // setPagination(productRes.data.pagination);
   }
 
-  const closeProductModal = () =>{
+
+  const openProductModal = () => {
+    productModal.current.show();
+  }
+
+  const closeProductModal = () => {
     productModal.current.hide();
   }
 
   return (
     <div className="p-3">
-      <ProductModal closeProductModal={closeProductModal}/>
+      <ProductModal 
+        closeProductModal={closeProductModal} 
+        getProducts={getProducts}
+      />
       <h3>產品列表</h3>
       <hr />
       <div className="text-end">
@@ -81,7 +94,7 @@ function AdminProducts() {
                   <td>{product.category}</td>
                   <td>{product.title}</td>
                   <td>{product.price}</td>
-                  <td>{product.is_enable ? '啟用' : '未啟用'}</td>
+                  <td>{product.is_enabled ? '啟用' : '未啟用'}</td>
                   <td>
                     <button
                       type="button"

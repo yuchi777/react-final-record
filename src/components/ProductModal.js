@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-function ProductModal({ closeProductModal }) {
+function ProductModal({ closeProductModal, getProducts }) {
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -44,6 +44,8 @@ function ProductModal({ closeProductModal }) {
     try {
       const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`, { data: tempData });
       console.log(res);
+      closeProductModal();
+      getProducts();
     } catch (error) {
       console.log(error);
     }
@@ -109,9 +111,9 @@ function ProductModal({ closeProductModal }) {
               <div className="col-sm-8">
 
                 {/* 顯示目前tempData內容 */}
-                <pre>
+                {/* <pre>
                   {JSON.stringify(tempData)}
-                </pre>
+                </pre> */}
                 <div className="form-group mb-2">
                   <label htmlFor="title" className="w-100">
                     標題
