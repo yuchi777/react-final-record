@@ -57,7 +57,7 @@ function AdminProducts() {
           {products.map(
             (product) => {
               return (
-                <tr>
+                <tr key={product.id}>
                   <td>{product.category}</td>
                   <td>{product.title}</td>
                   <td>{product.price}</td>

@@ -9,8 +9,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // 加入Axios
 import axios from 'axios';
+
 // 加入react-router-dom 
+// #（hash）後面的內容不會被伺服器解析，屬於「前端路由」的一部分。
 import { HashRouter } from 'react-router-dom';
+
 
 //預設網址
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
