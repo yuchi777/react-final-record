@@ -7,6 +7,10 @@ import { Modal } from 'bootstrap';
 function AdminProducts() {
   const [products, setProducts] = useState([]);
   // const [pagination, setPagination] = useState({});
+  
+  // type: 決定modal展開的用途
+  const [type, setType] = useState('create'); //create or edit
+  const [tempProduct, setTempProduct] = useState({});  //儲存目前正在編輯的產品資料
 
   const productModal = useRef(null);
 
@@ -51,7 +55,9 @@ function AdminProducts() {
   }
 
 
-  const openProductModal = () => {
+  const openProductModal = (type, product) => {
+    setType(type);
+    setTempProduct(product);
     productModal.current.show();
   }
 
@@ -64,6 +70,8 @@ function AdminProducts() {
       <ProductModal 
         closeProductModal={closeProductModal} 
         getProducts={getProducts}
+        tempProduct={tempProduct}
+        type={type}
       />
       <h3>產品列表</h3>
       <hr />
@@ -71,7 +79,7 @@ function AdminProducts() {
         <button
           className="btn btn-primary btn-sm"
           type="button"
-          onClick={openProductModal}
+          onClick={()=> openProductModal('create', {} )}
         >
           建立新商品
         </button>
@@ -99,6 +107,7 @@ function AdminProducts() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
+                      onClick={()=>{openProductModal('edit',product)}}
                     >
                       編輯
                     </button>

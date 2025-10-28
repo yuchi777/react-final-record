@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function ProductModal({ closeProductModal, getProducts }) {
+function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -13,6 +13,25 @@ function ProductModal({ closeProductModal, getProducts }) {
     is_enabled: 1,
     imageUrl: '',
   });
+
+  useEffect(() => {
+    if (type === 'create') {
+      setTempData({
+        title: '',
+        category: '',
+        origin_price: 100,
+        price: 300,
+        unit: '',
+        description: '',
+        content: '',
+        is_enabled: 1,
+        imageUrl: '',
+      })
+    }else if(type === 'edit'){
+      setTempData(tempProduct)
+    }
+
+  }, [type, tempProduct])
 
   const handleChange = (e) => {
 
@@ -40,15 +59,29 @@ function ProductModal({ closeProductModal, getProducts }) {
     }
   }
 
-  const submit = async() => {
+  const submit = async () => {
+
     try {
-      const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`, { data: tempData });
+
+      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
+      let method = 'post';
+
+      if(type === 'edit'){
+        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`;
+        method = 'put'
+      }
+      // const res = await axios.post(api, { data: tempData });
+      // axios[method] 是用 JavaScript 的「方括號存取屬性」語法動態呼叫函式。
+      const res = await axios[method](api, { data: tempData });
+
+
       console.log(res);
       closeProductModal();
       getProducts();
     } catch (error) {
       console.log(error);
     }
+
   }
 
   return (
