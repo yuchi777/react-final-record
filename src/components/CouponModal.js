@@ -10,6 +10,10 @@ function CouponModal({ closeModal, getCoupons, type, tempCoupon }) {
     code: ''
   });
 
+  //儲存時間格式
+  const [date, setDate] = useState(new Date());
+  // console.log(date); //Wed Oct 29 2025 16:06:01 GMT+0800 (台北標準時間)
+
   useEffect(() => {
     if (type === 'create') {
       setTempData({
@@ -18,9 +22,11 @@ function CouponModal({ closeModal, getCoupons, type, tempCoupon }) {
         percent: '',
         due_date: '',
         code: ''
-      })
+      });
+      setDate(new Date());
     } else if (type === 'edit') {
       setTempData(tempCoupon)
+      setDate(new Date(tempCoupon.due_date));
     }
 
   }, [type, tempCoupon])
@@ -62,12 +68,17 @@ function CouponModal({ closeModal, getCoupons, type, tempCoupon }) {
       }
       // const res = await axios.post(api, { data: tempData });
       // axios[method] 是用 JavaScript 的「方括號存取屬性」語法動態呼叫函式。
-      const res = await axios[method](api, { data: tempData });
+      const res = await axios[method](api, {
+          data: {
+            ...tempData, //展開
+            due_date: date.getTime(), //轉換成unix timestamp
+          } 
+        });
+      // console.log(res);
 
-
-      console.log(res);
       closeModal();
       getCoupons();
+
     } catch (error) {
       console.log(error);
     }
@@ -135,13 +146,17 @@ function CouponModal({ closeModal, getCoupons, type, tempCoupon }) {
                 <label htmlFor="due_date" className="w-100">
                   到期日
                   <input
-                    type="due_date"
+                    type="date"
                     id="due_date"
                     name="due_date"
                     placeholder="請輸入到期日"
                     className="form-control mt-1"
-                    onChange={handleChange}
-                    value={tempData.due_date}
+                    onChange={(e)=>{
+                      // console.log(e.target.value); //2025-10-29
+                      setDate(new Date(e.target.value)); //Wed Oct 29 2025 16:06:01 GMT+0800 (台北標準時間)
+                    }}
+                    //轉換時間格式帶入value，不能有空白YYYY-MM-DD
+                    value={`${date.getFullYear().toString()}-${(date.getMonth() + 1).toString().padStart(2,0)}-${date.getDate().toString().padStart(2,0)}`}
                   />
                 </label>
               </div>

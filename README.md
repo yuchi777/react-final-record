@@ -73,3 +73,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### API文件
   ## Swagger
      https://hexschool.github.io/ec-courses-api-swaggerDoc/
+
+  ## 時間格式
+    * input: 2023-2-15
+    * api: unix timestamp
+    * new Date: Wed Oct 29 2025 16:06:01 GMT+0800 (台北標準時間)
