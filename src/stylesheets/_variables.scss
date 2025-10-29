@@ -310,8 +310,8 @@ $info:          #99ffff !default;
 $warning:       #ffff99 !default;
 // $danger:        $red !default;
 $danger:        #ff9999 !default;
-// $light:         $gray-100 !default;
-$light:         #d9d9d9 !default;
+$light:         $gray-100 !default;
+// $light:         #d9d9d9 !default;
 // $dark:          $gray-900 !default;
 $dark:          #404040 !default;
 // scss-docs-end theme-color-variables

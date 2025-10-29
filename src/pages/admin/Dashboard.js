@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -85,31 +85,28 @@ function Dashboard() {
           stylle={{ width: '200px' }}
         >
           <ul className="list-group list-group-flush">
-            <a
-              // to="/admin/products"
-              href="/"
+            <Link
+              to="/admin/products"
               className="list-group-item list-group-item-action py-3"
             >
               <i className="bi bi-cup-fill me-2">
                 產品列表
               </i>
-            </a>
-            <a
-              // to="/admin/coupons"
-              href="/"
+            </Link>
+            <Link
+              to="/admin/coupons"
               className="list-group-item list-group-item-action py-3">
               <i className="bi bi-ticket-perforated-fill me-2">
                 優惠卷列表
               </i>
-            </a>
-            <a
-              // to="/admin/orders"
-              href="/"
+            </Link>
+            <Link
+              to="/admin/orders"
               className="list-group-item list-group-item-action py-3">
               <i className="bi bi-ticket-perforated-fill me-2">
                 訂單列表
               </i>
-            </a>
+            </Link>
           </ul>
         </div>
         <div className="w-100">

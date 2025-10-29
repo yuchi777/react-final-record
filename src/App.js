@@ -5,6 +5,7 @@ import {Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/AdminProducts';
+import AdminCoupons from './pages/admin/AdminCoupons';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path='/admin' element={<Dashboard/>}>
           <Route path="products" element={<AdminProducts/>} />
+          <Route path="coupons" element={<AdminCoupons/>} />
         </Route>
       </Routes>
     </div>
