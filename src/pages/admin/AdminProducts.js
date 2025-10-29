@@ -3,17 +3,18 @@ import axios from "axios";
 import { Modal } from 'bootstrap';
 import ProductModal from "../../components/ProductModal.js";
 import DeleteModal from "../../components/DeleteModal.js";
+import Pagination from "../../components/Pagination.js";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
-  // const [pagination, setPagination] = useState({});
-  
+  const [pagination, setPagination] = useState({});
+
   // type: 決定modal展開的用途
   const [type, setType] = useState('create'); //create or edit
   const [tempProduct, setTempProduct] = useState({});  //儲存目前正在編輯的產品資料
 
   const productModal = useRef(null);
-  const deleteModal = useRef(null); 
+  const deleteModal = useRef(null);
 
 
   useEffect(() => {
@@ -24,7 +25,7 @@ function AdminProducts() {
       backdrop: 'static',
     });
 
-    deleteModal.current = new Modal('#deleteModal',{
+    deleteModal.current = new Modal('#deleteModal', {
       backdrop: 'static'
     })
 
@@ -53,11 +54,12 @@ function AdminProducts() {
   }, [])
 
 
-  const getProducts = async () => {
-    const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`);
+  const getProducts = async (page = 1) => { //page預設為第一頁
+
+    const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=${page}`);
     console.log(productRes);
     setProducts(productRes.data.products);
-    // setPagination(productRes.data.pagination);
+    setPagination(productRes.data.pagination);
   }
 
   //開啟Modal
@@ -83,11 +85,11 @@ function AdminProducts() {
     deleteModal.current.hide();
   }
 
-  const deleteProduct = async(id) =>{
+  const deleteProduct = async (id) => {
     try {
       const res = await axios.delete(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`);
       // console.log(res);
-      if(res.data.success){
+      if (res.data.success) {
         getProducts();
         deleteModal.current.hide();
       }
@@ -98,13 +100,13 @@ function AdminProducts() {
 
   return (
     <div className="p-3">
-      <ProductModal 
-        closeProductModal={closeProductModal} 
+      <ProductModal
+        closeProductModal={closeProductModal}
         getProducts={getProducts}
         tempProduct={tempProduct}
         type={type}
       />
-      <DeleteModal 
+      <DeleteModal
         close={closeDeleteModal}
         text={tempProduct.title}
         handleDelete={deleteProduct}
@@ -116,7 +118,7 @@ function AdminProducts() {
         <button
           className="btn btn-primary btn-sm"
           type="button"
-          onClick={()=> openProductModal('create', {} )}
+          onClick={() => openProductModal('create', {})}
         >
           建立新商品
         </button>
@@ -144,14 +146,14 @@ function AdminProducts() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick={()=>{openProductModal('edit',product)}}
+                      onClick={() => { openProductModal('edit', product) }}
                     >
                       編輯
                     </button>
                     <button
                       type="button"
                       className="btn btn-outline-danger btn-sm ms-2"
-                      onClick={()=>openDeleteModal(product)}
+                      onClick={() => openDeleteModal(product)}
                     >
                       刪除
                     </button>
@@ -164,6 +166,11 @@ function AdminProducts() {
         </tbody>
       </table>
       {/* <Pagination pagination={pagination} changePage={getProducts} /> */}
+      <Pagination
+        pagination={pagination}
+        changePage={getProducts}
+      />
+      
     </div>
   );
 }

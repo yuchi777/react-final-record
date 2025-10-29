@@ -19,8 +19,8 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
       setTempData({
         title: '',
         category: '',
-        origin_price: 100,
-        price: 300,
+        origin_price: '',
+        price: '',
         unit: '',
         description: '',
         content: '',
@@ -39,6 +39,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
     console.log(name, value);
 
     if (['price', 'origin_price'].includes(name)) { //includes判斷陣列內是否有某個欄位名稱
+      
       setTempData({
         ...tempData, //展開原本的物件內容
         [name]: Number(value), //更新被改變的欄位//轉成數字
