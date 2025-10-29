@@ -89,7 +89,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
       id="productModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      // aria-hidden="true"
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
