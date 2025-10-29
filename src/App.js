@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import axios from 'axios';
-import {Routes, Route, Navigate } from 'react-router-dom';
+// import axios from 'axios';
+import {Routes, Route } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -9,7 +10,7 @@ function App() {
 
   //useEffect 內只能放同步函式，不能直接放 async function
   useEffect(() => {
-    console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
+    // console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
     // async function fetchData() {
     //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
     //   console.log(res);
@@ -17,12 +18,10 @@ function App() {
     // fetchData();
 
     //立即呼叫 IIFE 
-    (async () => {
-
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
-      console.log(res);
-
-    })();
+    // (async () => {
+    //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
+    //   console.log(res);
+    // })();
   }, []);
 
   return (

@@ -33,24 +33,21 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
 
   }, [type, tempProduct])
 
+// 表單資料更新
   const handleChange = (e) => {
-
     const { value, name, checked, type } = e.target;
     console.log(name, value);
-    if (['price', 'origin_price'].includes(name)) { //includes判斷陣列內是否有某個欄位名稱
 
+    if (['price', 'origin_price'].includes(name)) { //includes判斷陣列內是否有某個欄位名稱
       setTempData({
         ...tempData, //展開原本的物件內容
         [name]: Number(value), //更新被改變的欄位//轉成數字
-
       })
     } else if (type === 'checkbox') { //checkbox特殊處理
-
       setTempData({
         ...tempData, //展開原本的物件內容
         [name]: checked ? 1 : 0, //更新被改變的欄位//轉成1或0
       })
-
     } else {
       setTempData({
         ...tempData, //展開原本的物件內容
@@ -59,8 +56,8 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
     }
   }
 
+  //提交表單
   const submit = async () => {
-
     try {
 
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
@@ -92,13 +89,13 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
       id="productModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+      // aria-hidden="true"
     >
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              建立新商品
+              { type === 'create' ? '建立新商品' : `編輯${tempData.title}` }
             </h1>
             <button
               type="button"
@@ -262,7 +259,8 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
                         placeholder="請輸入產品說明內容"
                         className="form-check-input"
                         onChange={handleChange}
-                        value={tempData.is_enabled}
+                        // checked={Boolean(tempData.is_enabled)} 
+                        checked={!!tempData.is_enabled} // !!轉換布林值
                       />
                     </div>
                   </div>

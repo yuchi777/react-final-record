@@ -54,13 +54,14 @@ function AdminProducts() {
     // setPagination(productRes.data.pagination);
   }
 
-
+  //開啟Modal
   const openProductModal = (type, product) => {
     setType(type);
     setTempProduct(product);
     productModal.current.show();
   }
 
+  //關閉Modal
   const closeProductModal = () => {
     productModal.current.hide();
   }

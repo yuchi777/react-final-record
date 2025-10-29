@@ -17,7 +17,7 @@ function Dashboard() {
       .split('; ')
       .find(row => row.startsWith('yuchiToken='))
       ?.split('=')[1];
-    console.log(token, 'token is here');
+    // console.log(token, 'token is here');
     axios.defaults.headers.common['Authorization'] = token;
   
   // useEffect第二個參數為依賴陣列（dependencies）決定何時重跑：
@@ -86,7 +86,8 @@ function Dashboard() {
         >
           <ul className="list-group list-group-flush">
             <a
-              to="/admin/products"
+              // to="/admin/products"
+              href="/"
               className="list-group-item list-group-item-action py-3"
             >
               <i className="bi bi-cup-fill me-2">
@@ -94,14 +95,16 @@ function Dashboard() {
               </i>
             </a>
             <a
-              to="/admin/coupons"
+              // to="/admin/coupons"
+              href="/"
               className="list-group-item list-group-item-action py-3">
               <i className="bi bi-ticket-perforated-fill me-2">
                 優惠卷列表
               </i>
             </a>
             <a
-              to="/admin/orders"
+              // to="/admin/orders"
+              href="/"
               className="list-group-item list-group-item-action py-3">
               <i className="bi bi-ticket-perforated-fill me-2">
                 訂單列表
