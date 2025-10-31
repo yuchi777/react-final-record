@@ -1,22 +1,40 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { MessageContext } from "../store/messageStore";
 function Message() {
 
-  const [message, setMessage] = useState({});
+  // const [message, setMessage] = useState({});
+  const [
+    message, 
+    // dispatch
+  ] = useContext(MessageContext);
 
   return (
     <>
-      <button type="button" onClick={() => {
+      {/* <button type="button" onClick={() => {
 
-        setMessage({
-          type: 'danger',
-          title: '成功',
-          text: '你已完成訊息'
+        // setMessage({
+        //   type: 'danger',
+        //   title: '成功',
+        //   text: '你已完成訊息'
+        // });
+        // dispatch({
+        //   type: 'danger',
+        //   title: '成功',
+        //   text: '你已完成訊息'
+        // });
+
+        //改用Reducer
+        dispatch({
+          type: 'POST_MESSAGE',
         });
+
         setTimeout(() => {
-          setMessage({})
+          dispatch({
+            type:'CLEAR_MESSAGE'
+          })
         }, 3000)
 
-      }}>按我</button>
+      }}>按我</button> */}
       <div
         className="toast-container position-fixed"
         style={{ top: '60px', right: '15px' }}

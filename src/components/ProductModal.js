@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
+import { MessageContext,handleSucessMessage, handleErrorMessage } from "../store/messageStore";
 
 function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
   const [tempData, setTempData] = useState({
@@ -13,6 +14,12 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
     is_enabled: 1,
     imageUrl: '',
   });
+
+  const [
+    // message
+    , dispatch
+
+  ] = useContext(MessageContext); //const MessageContext = createContext({ });
 
   useEffect(() => {
     if (type === 'create') {
@@ -36,7 +43,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
 // 表單資料更新
   const handleChange = (e) => {
     const { value, name, checked, type } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
 
     if (['price', 'origin_price'].includes(name)) { //includes判斷陣列內是否有某個欄位名稱
       
@@ -74,10 +81,42 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
 
 
       console.log(res);
+
+      //toast
+      // dispatch({
+      //   type:'POST_MESSAGE',
+      //   payload:{
+      //     type:'success',
+      //     title:'更新成功',
+      //     text: res.data.message,
+      //   }
+      // })
+      //避免一直重複使用，dispatch進行封裝。滑鼠右鍵(重構擷取module中的function)-封裝
+      handleSucessMessage(dispatch, res);
+
+
       closeProductModal();
       getProducts();
     } catch (error) {
       console.log(error);
+      
+      //toast
+      // dispatch({
+      //   type:'POST_MESSAGE',
+      //   payload:{
+      //     type:'danger',
+      //     title:'失敗',
+      //     text:Array.isArray(error?.response?.data?.message) 
+      //     ? error?.response?.data?.message.join('、')
+      //     : error?.response?.data?.message,
+      //     // 有多個錯誤訊息時,用join('、')來串聯
+      //     //加入?可選串聯
+          
+      //   }
+      // })
+
+      //封裝
+      handleErrorMessage(dispatch, error);
     }
 
   }
@@ -291,3 +330,33 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct }) {
 }
 
 export default ProductModal;
+
+
+
+
+
+// 避免一直重複使用，dispatch進行封裝。滑鼠右鍵(重構擷取module中的function)-封裝
+// 至 messageStore export
+// function handleSucessMessage(dispatch, res) {
+//   dispatch({
+//     type: 'POST_MESSAGE',
+//     payload: {
+//       type: 'success',
+//       title: '更新成功',
+//       text: res.data.message,
+//     }
+//   });
+// }
+
+// function handleErrorMessage(dispatch, error) {
+//   dispatch({
+//     type: 'POST_MESSAGE',
+//     payload: {
+//       type: 'danger',
+//       title: '失敗',
+//       text: Array.isArray(error?.response?.data?.message)
+//         ? error?.response?.data?.message.join('、')
+//         : error?.response?.data?.message,
+//     }
+//   });
+// }
