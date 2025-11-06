@@ -74,7 +74,7 @@ function CouponModal({ closeModal, getCoupons, type, tempCoupon }) {
             due_date: date.getTime(), //轉換成unix timestamp
           } 
         });
-      // console.log(res);
+      console.log(res);
 
       closeModal();
       getCoupons();
