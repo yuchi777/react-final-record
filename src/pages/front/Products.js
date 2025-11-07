@@ -42,11 +42,11 @@ function Products() {
                     />
 
                     <NavLink href="/"  className="text-white position-absolute top-0 end-0 mt-2 me-2">
-                      <i class="bi bi-plus-circle-fill"></i>
+                      <i className="bi bi-plus-circle-fill"></i>
                     </NavLink>
                     
                     <div className="card-body p-0">
-                      <h4 className="mb-0 mt-2"><a href="/">{product.title}</a></h4>
+                      <h4 className="mb-0 mt-2"><NavLink to={`/product/${product.id}`}>{product.title}</NavLink></h4>
                       <p className="card-text text-muted mb-0">{product.content}</p>
                       <p className="text-muted mt-2">NT${product.price}</p>
                     </div>

@@ -78,3 +78,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
     * input: 2023-2-15
     * new Date: Wed Oct 29 2025 16:06:01 GMT+0800 (台北標準時間)
     * api: unix timestamp
+
+  ## GitHub文件 
+     https://github.com/hexschool/js-training-layout-2
