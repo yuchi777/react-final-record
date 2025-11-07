@@ -9,7 +9,8 @@ import AdminCoupons from './pages/admin/AdminCoupons';
 import FrontLayout from './pages/front/FrontLayout';
 import Home from './pages/front/Home';
 import Products from './pages/front/Products';
-import ProductDetail from './pages/front/productDetail';
+import ProductDetail from './pages/front/ProductDetail';
+import Cart from './pages/front/Cart';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="" element={<Home/>} />
           <Route path="products" element={<Products/>} /> 
           <Route path="product/:id" element={<ProductDetail/>} /> 
+          <Route path="cart" element={<Cart/>} />
         </Route>
         
         {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}

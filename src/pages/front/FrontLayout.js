@@ -5,7 +5,7 @@ import axios from "axios";
 
 function FrontLayou() {
   
-  const [cartData, setCartData] = useState({}); //存放購物車的資料
+  const [cartData, setCartData] = useState({carts: []}); //存放購物車的資料
 
   const getCart = async() => {
     try {
@@ -27,7 +27,7 @@ function FrontLayou() {
       <Navbar cartData={cartData}/>
 
       {/* //將getCart傳給子元件用物件方式，如果子元件要用解構方式接收 */}
-      <Outlet context={{getCart}}/> 
+      <Outlet context={{getCart, cartData}}/> 
 
       <div className="bg-dark">
         <div className="container">
