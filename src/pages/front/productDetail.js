@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios"; 
-import { useParams } from "react-router-dom"; //useParams方法取得路由網址中的參數
+import { useOutletContext, useParams } from "react-router-dom"; //useParams方法取得路由網址中的參數 //useOutletContext方法從子元件取得父元件的方法
 
 function ProductDetail() {
 
@@ -8,6 +8,7 @@ const [product, setProduct] = useState({}); //存放產品資料
 const { id } = useParams(); //取得路由網址中的參數
 const [cartQuantity, setCartQuantity] = useState(1); //購物車數量起始值為1
 const [isLoading, setIsLoading] = useState(false); //存放loading狀態
+const { getCart } = useOutletContext(); //react-router-dom的hook從子元件取得父元件的方法
 
 const getProduct = async(id) => {
 
@@ -27,6 +28,7 @@ const addToCart = async() =>{
   try{
     const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/cart`,data);
     console.log(res);
+    getCart();
     setIsLoading(false);
   }catch(error){
     console.log(error);

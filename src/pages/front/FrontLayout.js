@@ -1,14 +1,33 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function FrontLayou() {
+  
+  const [cartData, setCartData] = useState({}); //存放購物車的資料
+
+  const getCart = async() => {
+    try {
+      const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/cart`);
+      console.log('購物車內容',res);
+      setCartData(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getCart();
+  }, [])
 
 
   return (
-
     <>
-      <Navbar />
-      <Outlet />
+      <Navbar cartData={cartData}/>
+
+      {/* //將getCart傳給子元件用物件方式，如果子元件要用解構方式接收 */}
+      <Outlet context={{getCart}}/> 
 
       <div className="bg-dark">
         <div className="container">
