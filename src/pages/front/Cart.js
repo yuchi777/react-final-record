@@ -1,13 +1,39 @@
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 
 function Cart() {
   const { cartData, getCart } = useOutletContext();
+  const [loadingItems, setLoadingItem] = useState([]);
 
   const removerCartItem = async (id) => {
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
+      );
+      getCart();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const updateCartItem = async (item,qty) => {
+    const data = {
+      data:{
+        product_id: item.product.id,
+        qty: qty
+      }
+    }
+    setLoadingItem([...loadingItems, item.id]);
+
+    try {
+      const res = await axios.put(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${item.id}`,
+        data
+      );
+      setLoadingItem(
+        //過濾方式是當讀取的項目不等於要更新的項目id
+        loadingItems.filter((loadingObject) => loadingObject !== item.id )
       );
       getCart();
       console.log(res);
@@ -54,13 +80,45 @@ function Cart() {
                     </p>
                     <div className="d-flex justify-content-between align-items-center w-100">
                       <div className="input-group w-50 align-items-center">
+                        {/* 使用INPUT方式
                         <div className="input-group-prepend pe-1">
-                          <a href="/"> <i className="fas fa-minus"></i></a>
+                          <a href="/">
+                            <i className="fas fa-minus"></i>
+                          </a>
                         </div>
-                        <input type="text" className="form-control border-0 text-center my-auto shadow-none bg-light px-0" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"  />
+                        <input 
+                          type="text" 
+                          className="form-control border-0 text-center my-auto shadow-none bg-light px-0" 
+                          placeholder="" 
+                          aria-label="Example text with button addon" 
+                          aria-describedby="button-addon1"  
+                        />
                         <div className="input-group-append ps-1">
-                          <a href="/"><i className="fas fa-plus"></i></a>
-                        </div>
+                          <a href="/">
+                            <i className="fas fa-plus"></i>
+                          </a>
+                        </div> */}
+                        <select 
+                          name="" 
+                          className="form-select"
+                          id="" 
+                          value={item.qty}
+                          disabled={loadingItems.includes(item.id)} //當loadingItem陣列中有此項目時,禁用
+                          onChange={
+                            (e)=>{
+                              updateCartItem(item,e.target.value * 1); //型別轉換成數字
+                            }
+                          }
+                        >
+                          { 
+                            //展開陣列(可選數量)
+                            [...(new Array(10))].map((item,index) => { //索引位置從0開始
+                              return(
+                                <option value={ index +1 } key={index} > { index +1} </option>
+                              )
+                            })
+                          }
+                        </select>
                       </div>
                       <p className="mb-0 ms-auto">NT${item.final_total}</p>
                     </div>
