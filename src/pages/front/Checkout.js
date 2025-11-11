@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { Input } from '../../components/FormElement';
 
@@ -9,6 +9,7 @@ function Checkout() {
   const { cartData } = useOutletContext(); //使用useOutletContext方法從子元件取得父元件的方法
 
   const [orderDate] = useState(new Date().toLocaleString());
+  const navigate = useNavigate();
 
 
   const { //useForm方法取得表單資料
@@ -17,7 +18,7 @@ function Checkout() {
     // watch,
     // getValues,
     // control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched" //設定表單驗證模式
   });
@@ -35,8 +36,11 @@ function Checkout() {
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/order`,
         form
       );
+
       console.log("訂單成功送出", res.data);
       alert("訂單已成功送出！");
+       navigate(`/success/${res.data.orderId}`);
+
     } catch (error) {
       console.error("訂單送出失敗：", error);
       alert("訂單送出失敗，請稍後再試。");
@@ -130,7 +134,13 @@ function Checkout() {
                 </div>
 
                 <div className='d-grid'>
-                  <button type="submit" className="btn btn-dark">送出訂單</button>
+                  <button
+                    type="submit"
+                    className="btn btn-dark"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? '送出中...' : '送出訂單'}
+                  </button>
                 </div>
 
               </form>
