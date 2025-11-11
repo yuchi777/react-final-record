@@ -1,123 +1,188 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import { Input } from '../../components/FormElement';
 
 function Checkout() {
 
   const { cartData } = useOutletContext(); //使用useOutletContext方法從子元件取得父元件的方法
 
+  const [orderDate] = useState(new Date().toLocaleString());
+
+
+  const { //useForm方法取得表單資料
+    register,
+    handleSubmit, // 使用handleSubmit來觸發表單驗證
+    // watch,
+    // getValues,
+    // control,
+    formState: { errors },
+  } = useForm({
+    mode: "onTouched" //設定表單驗證模式
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      const { name, email, tel, address } = data;
+      const form = {
+        data: {
+          user: { name, email, tel, address },
+          message: "訂購單訊息",
+        },
+      };
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/order`,
+        form
+      );
+      console.log("訂單成功送出", res.data);
+      alert("訂單已成功送出！");
+    } catch (error) {
+      console.error("訂單送出失敗：", error);
+      alert("訂單送出失敗，請稍後再試。");
+    }
+  }
+
   return (
     <div className="bg-light pt-5 pb-7">
       <div className="container">
         <div className="row justify-content-center flex-md-row flex-column-reverse">
-          <div className="col-md-6">
+          {/* //使用useForm方法取得表單資料 //使用handleSubmit來觸發表單驗證 */}
+          <div className="col-md-6" >
             <div className="bg-white p-4">
-              <h4 className="fw-bold">1. Contact Form</h4>
-              <p className="mt-4">Contact information</p>
-              <form>
+              <h4 className="fw-bold">訂單資料</h4>
+              <p className="mt-4">{orderDate}</p>
+
+              <form onSubmit={handleSubmit(onSubmit)}>
+
                 <div className="mb-2">
-                  <label htmlFor="ContactMail" className="text-muted mb-0 form-label">Email</label>
-                  <input type="email" className="form-control rounded-0" id="ContactMail" aria-describedby="emailHelp" placeholder="example@gmail.com"/>
+                  <Input
+                    id="email"
+                    labelText="Email"
+                    type="email"
+                    errors={errors}
+                    register={register}
+                    rules={{
+                      required: "Email為必填",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, // 驗證email格式符合條件
+                        message: "Email格式不正確"
+                      }
+                    }}
+                  />
                 </div>
-                <div className="form-group form-check">
-                  <input type="checkbox" className="form-check-input rounded-0" id="ContactLorem"/>
-                    <label className="form-check-label" htmlFor="ContactLorem">Lorem ipsum dolor sit amet, consetetur</label>
-                </div>
+
+
+
                 <div className="mb-2">
-                  <label htmlFor="ContactName" className="text-muted mb-0 form-label">Name</label>
-                  <input type="text" className="form-control rounded-0" id="ContactName" placeholder="Carmen A. Rose"/>
+                  <Input
+                    id="name"
+                    type="text"
+                    errors={errors}
+                    labelText="訂購人名稱"
+                    register={register}
+                    rules={{
+                      required: "請輸入訂購人名稱",
+                      maxLength: {
+                        value: 10,
+                        message: "最多輸入10個字"
+                      }
+                    }}
+                  />
                 </div>
-                <div className="">
-                  <label htmlFor="ContactPhone" className="text-muted mb-0 form-label">Phone</label>
-                  <input type="text" className="form-control rounded-0" id="ContactPhone" placeholder="0933-123-123"/>
+
+                <div className="mb-2">
+                  <Input
+                    id="tel"
+                    labelText="電話"
+                    type="tel"
+                    errors={errors}
+                    register={register}
+                    rules={{
+                      required: "電話為必填",
+                      minLength: {
+                        value: 6,
+                        message: "最少輸入6個碼"
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: "最多輸入12碼"
+                      },
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "電話只能輸入數字"
+                      }
+                    }}
+                  />
                 </div>
+
+                <div className="mb-2">
+                  <Input
+                    id="address"
+                    labelText="地址"
+                    type="text"
+                    errors={errors}
+                    register={register}
+                    rules={{
+                      required: "地址為必填"
+                    }}
+                  />
+                </div>
+
+                <div className='d-grid'>
+                  <button type="submit" className="btn btn-dark">送出訂單</button>
+                </div>
+
               </form>
             </div>
-            <div className="bg-white p-4 mt-3">
-              <h4 className="fw-bold">2. Shipping Form</h4>
-              <form>
-                <p className="mt-4 mb-3">Shipping address</p>
-                <div className="form-row">
-                  <div className="col mb-2">
-                    <select id="inputState" className="form-select rounded-0">
-                      <option selected>Country/Region</option>
-                      <option>...</option>
-                    </select>
-                  </div>
-                  <div className="col mb-2">
-                    <select id="inputState" className="form-select rounded-0">
-                      <option selected>City</option>
-                      <option>...</option>
-                    </select>
-                  </div>
-                </div>
-                <input type="text" className="form-control rounded-0 mt-1" id="inputCity" placeholder="Address"/>
-                  <p className="mt-4 mb-2">Payment</p>
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked/>
-                      <label className="form-check-label text-muted" htmlFor="gridRadios1">WebATM
-                      </label>
-                  </div>
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2"/>
-                      <label className="form-check-label text-muted" htmlFor="gridRadios2">ATM
-                      </label>
-                  </div>
-                  <div className="form-check mb-2">
-                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3"/>
-                      <label className="form-check-label text-muted" htmlFor="gridRadios3">ApplePay
-                      </label>
-                  </div>
-              </form>
-            </div>
-            <div className="d-flex flex-column-reverse flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">
-              <Link to="./product.html" className="text-dark mt-md-0 mt-3"><i className="fas fa-chevron-left me-2"></i> Lorem ipsum</Link>
-              <Link to="./checkout-success.html" className="btn btn-dark py-3 px-7 rounded-0">Lorem ipsum</Link>
-            </div>
+
+
           </div>
+
+
           <div className="col-md-4">
             <div className="border p-4 mb-4">
               <h4 className="mb-4">Order Detail</h4>
-              <div className="d-flex">
-                <img src="https://picsum.photos/g/50/?blur" alt="" className="me-2" style={{ width: '48px', height: '48px', objectFit: 'cover'  }}/>
-                  <div className="w-100">
-                    <div className="d-flex justify-content-between fw-bold">
-                      <p className="mb-0">Lorem ipsum</p>
-                      <p className="mb-0">x10</p>
+              {
+                cartData?.carts?.map((item) => {
+                  return (
+                    <div className="d-flex" key={item.id}>
+                      <img
+                        src="https://picsum.photos/g/50/?blur"
+                        alt=""
+                        className="me-2"
+                        style={{ width: '48px', height: '48px', objectFit: 'cover' }}
+                      />
+                      <div className="w-100">
+                        <div className="d-flex justify-content-between fw-bold">
+                          <p className="mb-0">{item.product.title}</p>
+                          <p className="mb-0">x{item.qty}</p>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <small>單價: {item.product.price}</small>
+                          </p>
+
+                        </div>
+                        <div className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <small>小計: {item.final_total}</small>
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-muted mb-0"><small>NT$12,000</small></p>
-                      <p className="mb-0">NT$12,000</p>
-                    </div>
-                  </div>
-              </div>
-              <div className="d-flex mt-2">
-                <img src="https://picsum.photos/g/50/?blur" alt="" className="me-2" style={{ width: '48px', height: '48px', objectFit: 'cover'  }}/>
-                  <div className="w-100">
-                    <div className="d-flex justify-content-between fw-bold">
-                      <p className="mb-0">Lorem ipsum</p>
-                      <p className="mb-0">x10</p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-muted mb-0"><small>NT$12,000</small></p>
-                      <p className="mb-0">NT$12,000</p>
-                    </div>
-                  </div>
-              </div>
-              <table className="table mt-4 border-top border-bottom text-muted">
-                <tbody>
-                  <tr>
-                    <th scope="row" className="border-0 px-0 pt-4 font-weight-normal">Subtotal</th>
-                    <td className="text-end border-0 px-0 pt-4">NT$24,000</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" className="border-0 px-0 pt-0 pb-4 font-weight-normal">Payment</th>
-                    <td className="text-end border-0 px-0 pt-0 pb-4">ApplePay</td>
-                  </tr>
-                </tbody>
-              </table>
+                  )
+                })
+              }
+
+
               <div className="d-flex justify-content-between mt-4">
-                <p className="mb-0 h4 fw-bold">Total</p>
-                <p className="mb-0 h4 fw-bold">NT$24,000</p>
+                <p className="mb-0 h4 fw-bold">
+                  總計
+                  ${cartData?.final_total}
+                </p>
               </div>
+
             </div>
           </div>
         </div>

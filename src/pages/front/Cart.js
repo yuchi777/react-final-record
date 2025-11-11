@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const { cartData, getCart } = useOutletContext();
@@ -131,7 +132,7 @@ function Cart() {
 
 
           {/* 優惠卷 */}
-          <table className="table mt-4 text-muted">
+          {/* <table className="table mt-4 text-muted">
             <tbody>
               <tr>
                 <th scope="row" className="border-0 px-0 font-weight-normal">Lorem ipsum</th>
@@ -142,13 +143,18 @@ function Cart() {
                 <td className="text-end border-0 px-0 pt-0">NT$500</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
 
           <div className="d-flex justify-content-between mt-4">
             <p className="mb-0 h4 fw-bold">總金額</p>
             <p className="mb-0 h4 fw-bold">NT${cartData.final_total}</p>
           </div>
-          <a href="./checkout.html" className="btn btn-dark w-100 mt-4 rounded-0 py-3">確認</a>
+          <Link 
+            to="/checkout" 
+            className="btn btn-dark w-100 mt-4 rounded-0 py-3"
+          >
+            確認
+          </Link>
         </div>
       </div>
     </div>
