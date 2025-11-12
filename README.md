@@ -73,6 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### API文件
   ## Swagger
      https://hexschool.github.io/ec-courses-api-swaggerDoc/
+     https://github.com/hexschool/ec-courses-api-swaggerDoc/tree/gh-pages/data
 
   ## 時間格式
     * input: 2023-2-15

@@ -9,6 +9,7 @@ function Checkout() {
   const { cartData } = useOutletContext(); //使用useOutletContext方法從子元件取得父元件的方法
 
   const [orderDate] = useState(new Date().toLocaleString());
+  
   const navigate = useNavigate();
 
 
@@ -37,9 +38,9 @@ function Checkout() {
         form
       );
 
-      console.log("訂單成功送出", res.data);
+      console.log("訂單已送出資料", res.data);
       alert("訂單已成功送出！");
-       navigate(`/success/${res.data.orderId}`);
+      navigate(`/success/${res.data.orderId}`);
 
     } catch (error) {
       console.error("訂單送出失敗：", error);

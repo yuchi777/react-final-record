@@ -1,17 +1,21 @@
-import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link, useParams, useOutletContext } from "react-router-dom";
+
 const Success = () => {
 
   const { orderId } = useParams(); // 取得路由網址中的參數
   console.log('訂單編號ID', orderId);
 
   const [orderData, setOrderData] = useState({});
+  const { cartData } = useOutletContext();
+  console.log('父元件cartDatat', cartData);
 
   const getCart = async (orderId) => {
     try {
       const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/order/${orderId}`);
-      console.log('orderData', res);
+      console.log('獲得已checkout訂單內容', res);
+      
       setOrderData(res.data.order);
 
     } catch (error) {

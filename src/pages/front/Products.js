@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "../../components/Pagination";
 import { NavLink } from "react-router-dom"; //替換<a>連結
+// import ReactLoading from 'react-loading'; //改使用Loading元件
+import Loading from "../../components/Loading";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({});
+  const [isLoading, setLoading] = useState(false);
 
-  const getProducts = async (page=1) => {
+  const getProducts = async (page = 1) => {
+    setLoading(true);
     const productRes = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products?page=${page}`);
     console.log(productRes);
     setProducts(productRes.data.products);
     setPagination(productRes.data.pagination);
-
+    setLoading(false);
   };
 
 
@@ -24,27 +28,47 @@ function Products() {
   return (
     <>
       <div className="container mt-md-5 mt-3 mb-7">
-        <div className="row">
+        <Loading isLoading={isLoading} />
+        {/* {
+          isLoading && ( // isLoading為true時顯示
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              zIndex: 999,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backdropFilter: 'blur(2px)'
+            }}>
+              <ReactLoading type='bubbles' color='white' height={60} width={100} />
+            </div>
+          )
+        } */}
 
+        <div className="row">
           {
             products.map((product) => {
               return (
                 <div className="col-md-3" key={product.id}>
                   <div className="card border-0 mb-4 position-relative">
 
-                    <img 
+                    <img
                       src={
-                      product.imageUrl ? "" :'https://picsum.photos/g/50/?blur'
-                      } 
-                      className="card-img-top rounded-0 object-cover" 
+                        product.imageUrl ? "" : 'https://picsum.photos/g/50/?blur'
+                      }
+                      className="card-img-top rounded-0 object-cover"
                       height={250}
-                      alt="..." 
+                      alt="..."
                     />
 
-                    <NavLink href="/"  className="text-white position-absolute top-0 end-0 mt-2 me-2">
+                    <NavLink href="/" className="text-white position-absolute top-0 end-0 mt-2 me-2">
                       <i className="bi bi-plus-circle-fill"></i>
                     </NavLink>
-                    
+
                     <div className="card-body p-0">
                       <h4 className="mb-0 mt-2"><NavLink to={`/product/${product.id}`}>{product.title}</NavLink></h4>
                       <p className="card-text text-muted mb-0">{product.content}</p>
